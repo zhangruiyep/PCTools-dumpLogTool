@@ -49,3 +49,10 @@ Change History:
 * 2016/7/19
 
 	* Add feature: find key words in dmesg. The key words is store in ini file.
+	
+* 2016/7/21
+
+	* Get Linux Parser path base on current file path. Do not need modify in ini file.
+
+	* Fix minor bugs.
+	

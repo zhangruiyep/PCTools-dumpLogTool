@@ -14,13 +14,14 @@ else:
 	vmPath = findFile.extractFind("vmlinux", sys.argv[1])
 	logPath = findFile.extractFind("DDRCS0.BIN", sys.argv[2])
 	# read ramdump path from cfg.ini
+	thisPath = os.path.split(os.path.realpath(__file__))[0]
 	cf = ConfigParser.ConfigParser()
-	cf.read(os.path.join(os.path.split(os.path.realpath(__file__))[0],"cfg.ini"))
+	cf.read(os.path.join(thisPath,"cfg.ini"))
 	#print cf.sections()
-	lpPath = cf.get("LinuxParser", "Path")
+	lpPath = os.path.split(thisPath)[0]
 	
 	#print lpPath
-	parserPath = findFile.extractFind("dump.bat", os.path.realpath(lpPath))
+	parserPath = findFile.extractFind("ramparse.py", os.path.realpath(lpPath))
 	
 	# get platform info
 	if len(sys.argv) > 3:
