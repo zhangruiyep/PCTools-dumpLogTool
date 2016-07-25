@@ -16,6 +16,14 @@ Usage:
 D:\ramdump8976\dumpLogTool\checkdump.bat vmlinux_path log_path [platform]<br/>
 platform is optional. Such as 8909, 8976, 8939. This will map to dump8909.bat, dump8976.bat, dump8939.bat.
 
+Or run GUI version (recommanded)
+
+1. Double click start.bat to run GUI.
+
+2. Choose log path, vmlinux path and platform.
+
+3. Click START button. It will open a console and show the result.
+
 Note:
 -----
 1. Path or file name does not support Chinese or non-ASCII char.
@@ -60,4 +68,7 @@ Change History:
 
 	* Add a simple tkinter GUI. Run start.bat.
 	
-	* sperate checkdump function from main.
+	* Sperate checkdump function from main.
+	
+	* Add WinRAR support. NOT tested.
+	
