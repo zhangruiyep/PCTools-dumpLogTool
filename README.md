@@ -56,3 +56,8 @@ Change History:
 
 	* Fix minor bugs.
 	
+* 2016/7/25
+
+	* Add a simple tkinter GUI. Run start.bat.
+	
+	* sperate checkdump function from main.

@@ -5,30 +5,19 @@ import findFile
 import extract
 import findReason
 
-# main
-if len(sys.argv) < 3 or len(sys.argv) > 4:
-	print "Usage: \tcheckDump vmlinux_path dump_log_path [MSM_platform]"
-	print "Ver: \t1.02 2016-07-13"
-else:
-	# find all files we need
-	vmPath = findFile.extractFind("vmlinux", sys.argv[1])
-	logPath = findFile.extractFind("DDRCS0.BIN", sys.argv[2])
+def checkDump(vm_path, log_path, platform):
 	# read ramdump path from cfg.ini
 	thisPath = os.path.split(os.path.realpath(__file__))[0]
 	cf = ConfigParser.ConfigParser()
 	cf.read(os.path.join(thisPath,"cfg.ini"))
-	#print cf.sections()
 	lpPath = os.path.split(thisPath)[0]
 	
-	#print lpPath
 	parserPath = findFile.extractFind("ramparse.py", os.path.realpath(lpPath))
 	
-	# get platform info
-	if len(sys.argv) > 3:
-		platform = sys.argv[3]
-	else:
-		platform = ""
-	
+	# find all files we need
+	vmPath = findFile.extractFind("vmlinux", vm_path)
+	logPath = findFile.extractFind("DDRCS0.BIN", log_path)
+
 	arch = "64-bit"
 	if platform != "":
 		arch = cf.get(platform, "arch")
@@ -54,3 +43,17 @@ else:
 	else:
 		print "ERR: log or vmlinux path can not found! STOP"
 	
+	
+
+# main
+if len(sys.argv) < 3 or len(sys.argv) > 4:
+	print "Usage: \tcheckDump vmlinux_path dump_log_path [MSM_platform]"
+	print "Ver: \t1.02 2016-07-13"
+else:
+	# get input from sys.argv
+	if len(sys.argv) > 3:
+		pf = sys.argv[3]
+	else:
+		pf = ""
+
+	checkDump(sys.argv[1], sys.argv[2], pf)
