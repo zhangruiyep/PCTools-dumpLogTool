@@ -72,3 +72,8 @@ Change History:
 	
 	* Add WinRAR support. NOT tested.
 	
+* 2016/7/27
+
+	* Print msg modified.
+
+	

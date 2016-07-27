@@ -48,7 +48,6 @@ def checkDump(vm_path, log_path, platform):
 # main
 if len(sys.argv) < 3 or len(sys.argv) > 4:
 	print "Usage: \tcheckDump vmlinux_path dump_log_path [MSM_platform]"
-	print "Ver: \t1.02 2016-07-13"
 else:
 	# get input from sys.argv
 	if len(sys.argv) > 3:
