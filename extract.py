@@ -2,14 +2,7 @@ import sys
 import os
 import ConfigParser
 import findFile
-
-'''
-extractTools = [
-	[r"7-zip", r"7z.exe", r" x {0} -y -r -o{1}", r"C:\Progra~1\7-Zip"],
-	[],
-	[]
-]
-'''
+import winRegistry
 
 class extractTool:
 	def __init__(self, name, userPath=""):
@@ -17,6 +10,8 @@ class extractTool:
 		self.exe = ""
 		self.Path = userPath
 		self.command = ""
+		self.RegPath = ""
+		self.RegName = ""
 		if self.check(userPath) < 0:
 			print "ERR: %s invalid." % self.name
 			self.valid = False
@@ -26,41 +21,58 @@ class extractTool:
 
 	def check(self, userPath):
 		cf = ConfigParser.ConfigParser()
-		cf.read(os.path.join(os.path.split(os.path.realpath(__file__))[0],"cfg.ini"))
+		iniFileName = os.path.join(os.path.split(os.path.realpath(__file__))[0],"cfg.ini")
+		cf.read(iniFileName)
 		
 		exeValue = cf.get(self.name, "Exe")
 		if exeValue != "":
 			self.exe = exeValue
-			self.Path = cf.get(self.name, "Path")
 			self.command = " "+cf.get(self.name, "Cmd")
-		'''			
-		for t in extractTools:
-			#print t, self.name
-			if t[0] == self.name:
-				#print "got %s" % t[0]
-				self.exe = t[1]
-				self.command = t[2]
-				if userPath == "":
-					self.Path = t[3]
-				else:
-					self.Path = userPath
-				break
-		'''
+			try:
+				self.Path = cf.get(self.name, "Path")
+			except:
+				pass
+
+			try:
+				self.RegPath = cf.get(self.name, "RegPath")
+				self.RegName = cf.get(self.name, "RegName")
+			except:
+				pass
+
+
 		if self.exe == "":
 			print self.name,"Not supported"
 			return -1
 			
+		if self.RegPath != "":
+			pathInReg = winRegistry.getRegValue(self.RegPath, self.RegName)[0]
+			
+		''' Now we have path in registry and user define path in ini file.
+		Check user path first.
+		If user path is invalid, then check registry and update user path in ini for next time. '''
+		
 		#print "checking %s..." % self.name
 		files = findFile.findFilePath(self.exe, self.Path)
 		if len(files) == 0:
+			# check regitry path
 			#print "%s not found" % self.name
-			return -1			
+			print "pathInReg=%s" % pathInReg
+			files = findFile.findFilePath(self.exe, pathInReg)
+			if len(files) == 0:
+				return -1
+			elif len(files) == 1:
+				self.exe = '"{}"'.format(os.path.realpath(files[0]))
+				cf.set(self.name, "Path", pathInReg)
+				
+				f = open(iniFileName, "w")
+				cf.write(f)
+				f.close()
+				
+				return 0
 		elif len(files) == 1:
 			#print "got %s at %s" % (self.name, os.path.dirname(files[0]))
-			self.exe = files[0]
+			self.exe = '"{}"'.format(os.path.realpath(files[0]))
 			return 0
-
-		
 
 
 class archive:

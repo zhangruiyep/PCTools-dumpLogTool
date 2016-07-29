@@ -76,4 +76,6 @@ Change History:
 
 	* Print msg modified.
 
-	
+* 2016/7/29
+
+	* Add registry support. It will read install path from registry.
