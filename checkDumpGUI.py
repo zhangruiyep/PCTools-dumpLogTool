@@ -2,6 +2,7 @@ import Tkinter as tk
 import tkFileDialog
 import tkMessageBox
 import os
+import ConfigParser
 
 class Application(tk.Frame):
 	def __init__(self, master=None):
@@ -31,7 +32,7 @@ class Application(tk.Frame):
 		self.vmInfo = tk.Label(self, text="Choose hardware platform:", justify=tk.LEFT)
 		self.vmInfo.grid(row=4, sticky=tk.W)
 
-		optionList = ('8976', '8909', '8939')
+		optionList = self.getOptions()
 		self.v = tk.StringVar()
 		self.v.set(optionList[0])
 		self.platformOpt = tk.OptionMenu(self, self.v, *optionList)
@@ -39,7 +40,18 @@ class Application(tk.Frame):
 		
 		self.startBtn = tk.Button(self, text="START", command=self.start)
 		self.startBtn.grid(row=5, columnspan=2)
-
+		
+	def getOptions(self):
+		optionList = []
+		thisPath = os.path.split(os.path.realpath(__file__))[0]
+		cf = ConfigParser.ConfigParser()
+		cf.read(os.path.join(thisPath,"cfg.ini"))
+		
+		for sec in cf.sections():
+			if "arch" in cf.options(sec):
+				optionList.append(sec)
+		
+		return optionList
 		
 	def openVmDir(self):
 		self.pathname=tkFileDialog.askdirectory()
