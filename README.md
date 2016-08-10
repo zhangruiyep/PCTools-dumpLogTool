@@ -79,3 +79,7 @@ Change History:
 * 2016/7/29
 
 	* Add registry support. It will read install path from registry.
+
+* 2016/8/10
+
+	* GUI read platform options from ini.
