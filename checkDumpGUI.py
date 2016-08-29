@@ -55,12 +55,12 @@ class Application(tk.Frame):
 		
 	def openVmDir(self):
 		self.pathname=tkFileDialog.askdirectory()
-		self.vmPath.delete(1.0)
+		self.vmPath.delete(1.0, tk.END)
 		self.vmPath.insert(1.0, os.path.realpath(self.pathname))
 
 	def openLogDir(self):
 		self.pathname=tkFileDialog.askdirectory()
-		self.logPath.delete(1.0)
+		self.logPath.delete(1.0, tk.END)
 		self.logPath.insert(1.0, os.path.realpath(self.pathname))
 	
 	def start(self):
