@@ -83,3 +83,8 @@ Change History:
 * 2016/8/10
 
 	* GUI read platform options from ini.
+	
+* 2016/10/09
+
+	* Improve .tar.gz support
+	

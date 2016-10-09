@@ -50,6 +50,7 @@ def extractFind(filename, rootdir):
 		FileTypes = cf.get("Tool", "FileTypes")
 		
 		pkgTypes = FileTypes.split(';')
+		# find archive and extract
 		pkgs = findPkg(pkgTypes, rootdir)
 		if len(pkgs) == 0:
 			#print "pkgs not found"
@@ -63,7 +64,18 @@ def extractFind(filename, rootdir):
 				else:
 					print "ERR: %s format err" % p
 					pass
-					
+			
+			# pkg may be double archived, like .tar.gz
+			pkgs2 = findPkg(pkgTypes, rootdir)
+			for p in pkgs2:
+				if p not in pkgs:
+					arch = extract.archive(p, toolName)
+					if arch.extractFile() == 0:
+						pass
+					else:
+						print "ERR: %s format err" % p
+						pass
+			
 			#print "checking again..."
 			files = findFilePath(filename, rootdir)
 			if len(files) == 0:
