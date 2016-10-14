@@ -4,12 +4,22 @@
 '''
 import sys
 
+decode = {
+	"23":"Secure watchdog bite",
+	"13":"PMIC abnormal reset",
+	"1B":"TSENSE reset (temperature sensor-triggered reset)",
+	"4":"Software triggered reset",
+	"0":"Non-MSM triggered reset",
+	}
+
 def printRESET(filename):
 	f = open(filename, "rb")
 	#print filename, "is opened"
 	# offset to GCC_RESET_STATUS
 	f.seek(0x764,0)
 	byte = f.read(1)
-	print "0x"+byte.encode("hex")
+	value = byte.encode("hex")
+	print "0x"+value
+	print decode[value]
 	
 	f.close()
