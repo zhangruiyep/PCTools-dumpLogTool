@@ -4,6 +4,8 @@ import ConfigParser
 import findFile
 import extract
 import findReason
+import printPON
+import printIMEM
 
 def checkDump(vm_path, log_path, platform):
 	# read ramdump path from cfg.ini
@@ -40,10 +42,25 @@ def checkDump(vm_path, log_path, platform):
 		os.system(parserCmdLine)
 		
 		findReason.findReason(os.path.join(logPath, r"parser\dmesg_TZ.txt"))
+		
+		# check if extra ops exist
+		ex = cf.get("LinuxParser", "extra")
+		exops = ex.split(';')
+		
+		# check GCC_RESET_STATUS
+		if "GCC_RESET_STATUS" in exops:
+			print "======================"
+			print "Dump GCC_RESET_STATUS:"		
+			printIMEM.printRESET(os.path.join(logPath, "OCIMEM.BIN"))
+		
+		# check PMIC_PON
+		if "PMIC_PON" in exops:
+			print "=============="
+			print "Dump PMIC_PON:"
+			printPON.printPON(os.path.join(logPath, "PMIC_PON.BIN"), "PMI8952")
 	else:
 		print "ERR: log or vmlinux path can not found! STOP"
-	
-	
+
 
 # main
 if len(sys.argv) < 3 or len(sys.argv) > 4:

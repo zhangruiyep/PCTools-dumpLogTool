@@ -87,4 +87,7 @@ Change History:
 * 2016/10/09
 
 	* Improve .tar.gz support
-	
+
+* 2016/10/14
+
+	* Add PMIC_PON GCC_RESET_STATUS info print.
