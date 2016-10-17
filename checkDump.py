@@ -33,7 +33,7 @@ def checkDump(vm_path, log_path, platform):
 
 	parserCmdLine = r"c:\Python27\python {0}\ramparse.py {1} -v {2}\vmlinux -a {3} -o {3}\parser {4} --nm-path={0}\{5} --gdb-path={0}\{6} --{7}".format(parserPath, lpCmd, vmPath, logPath, fhCmd, nm, gdb, arch)
 	
-	if vmPath != "" and logPath != "":
+	if vmPath != None and logPath != None:
 		print "set vmlinux path: %s\nset log path: %s" % (vmPath, logPath)
 		print "set platform: %s" % platform
 		

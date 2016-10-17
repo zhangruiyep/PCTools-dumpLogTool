@@ -54,7 +54,7 @@ def extractFind(filename, rootdir):
 		pkgs = findPkg(pkgTypes, rootdir)
 		if len(pkgs) == 0:
 			#print "pkgs not found"
-			return ""
+			return None
 		else:
 			print pkgs
 			for p in pkgs:
@@ -80,9 +80,11 @@ def extractFind(filename, rootdir):
 			files = findFilePath(filename, rootdir)
 			if len(files) == 0:
 				#print "vmlinux not found again!"
-				return ""
+				return None
 			elif len(files) == 1:
 				#print "got vmliux at " + os.path.dirname(files[0])
 				return os.path.dirname(files[0])
 
-	
+	else:
+		print "Find multi dump logs. Please change path to choose one."
+		return None
