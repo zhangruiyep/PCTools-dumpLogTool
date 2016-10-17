@@ -59,7 +59,8 @@ PON_WARM_RESET_REASON2_tbl = [
     ["", ""],
     ["", ""],
     ["", ""],
-    ["AFP",     "Triggered AFP"],
+    # In PMI8952 doc it is AFP, In PM8916 doc it is TFT
+    ["AFP/TFT",     "Triggered AFP/TFT"],
     ["", ""],
     ["", ""],
     ["", ""],
@@ -100,13 +101,18 @@ PMI8952_PON = [
 
 def printUsage():
 	print "Usage: printPON.py filename hardwareType"
-	print "Ver: 20160329"
+	print "Ver: 20161017"
+
+supported_pmic = [
+	"PMI8952",
+	"PM8916"
+	]
 
 def checkHwType(hwType):
-	if hwType != "PMI8952":
-	        return False
-	else:
+	if hwType in supported_pmic:
 	        return True
+	else:
+	        return False
 
 def printPON(filename, hwType):
 	if checkHwType(hwType) == False:
