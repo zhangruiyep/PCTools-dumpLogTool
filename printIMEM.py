@@ -20,6 +20,9 @@ def printRESET(filename):
 	byte = f.read(1)
 	value = byte.encode("hex")
 	print "0x"+value
-	print decode[value]
+	try:
+		print decode[value]
+	except:
+		print "unknown reason"
 	
 	f.close()
