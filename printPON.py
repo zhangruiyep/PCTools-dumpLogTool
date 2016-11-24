@@ -15,14 +15,14 @@ class PONregister(object):
                         print self.bitsList[i][0]
         def printValue(self, value):
                 if self.name != "dummy":
-                        print self.name
-                        for i in range(0, 8):
-                                bit = value & 0x01
-                                if bit == 1:
-                                        print self.bitsList[i][1]
-                                value = value >> 1
-                        print ""
-        
+					if value != 0:
+						print ""
+						print self.name
+					for i in range(0, 8):
+						bit = value & 0x01
+						if bit == 1:
+							print self.bitsList[i][1]
+						value = value >> 1
 
 
 PON_PON_REASON1_tbl = [
@@ -101,7 +101,7 @@ PMI8952_PON = [
 
 def printUsage():
 	print "Usage: printPON.py filename hardwareType"
-	print "Ver: 20161017"
+	print "Ver: 20161123"
 
 supported_pmic = [
 	"PMI8952",

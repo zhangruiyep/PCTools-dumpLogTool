@@ -91,3 +91,7 @@ Change History:
 * 2016/10/14
 
 	* Add PMIC_PON GCC_RESET_STATUS info print.
+	
+* 2016/11/23
+
+	* Hide unused info. Make info more clear.
