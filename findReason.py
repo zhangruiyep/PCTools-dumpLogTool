@@ -16,7 +16,8 @@ def findReason(filename):
 	#print keys
 	reasons = keys.split(';')
 	#print reasons
-	
+	print "=================="
+	print "Finding reasons..."
 	f = open(filename, "r")
 	for l in f.readlines():
 		for r in reasons:
