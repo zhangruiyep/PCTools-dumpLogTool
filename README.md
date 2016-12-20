@@ -6,15 +6,21 @@ Feature:
 
 2. If vmlinux or dump log is in archive, such as zip format, it will be extracted automatically. Then set the path.
 
+3. You can pack result or log, vmlinux.
+
 Usage:
 ------
 1. Unzip this tool into ramdump tool. Such as D:\ramdump8976\dumpLogTool\checkdump.bat
 
 2. Modify ini file to your real path if needed.
 
-3. Open cmd.exe and run:<br/>
-D:\ramdump8976\dumpLogTool\checkdump.bat vmlinux_path log_path [platform]<br/>
-platform is optional. Such as 8909, 8976, 8939. This will map to dump8909.bat, dump8976.bat, dump8939.bat.
+CLI version
+
+Open cmd.exe and run:
+
+D:\ramdump8976\dumpLogTool\checkdump.bat vmlinux_path log_path [platform]
+
+platform is optional. Such as 8909, 8976, 8939. 
 
 Or run GUI version (recommanded)
 
@@ -95,3 +101,8 @@ Change History:
 * 2016/11/23
 
 	* Hide unused info. Make info more clear.
+	
+* 2016/12/20
+
+	* Add feature: package result
+	
