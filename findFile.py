@@ -1,7 +1,7 @@
 import os
 import fnmatch
-import ConfigParser
-import extract
+import cfg
+import compressTool
 
 def findFile(filename):
 	results = []
@@ -32,20 +32,32 @@ def findPkg(filenames, rootdir):
 					result.append(os.path.join(root, f)) 
 	return result 
 
+def findOneFile(filename, rootdir):
+	files = findFilePath(filename, rootdir)
+	if len(files) == 1:
+		return os.path.dirname(files[0])
+	elif len(files) == 0:
+		return None
+	else:
+		return "multi"	
+		
+	
 def extractFind(filename, rootdir):
 	result = []
-	files = findFilePath(filename, rootdir)
-	#print filename, rootdir
-	if len(files) == 1:
-		#print "got path " + os.path.dirname(files[0])
-		return os.path.dirname(files[0])
-
-	elif len(files) == 0:
+	file = findOneFile(filename, rootdir)
+	if file == "multi":
+		# get multi file, no need to extract
+		print "Find multi files with same name. Please change path to choose one."
+		return None
+	elif file == None:
+		# need extract then find
 		print "%s not found" % filename
 		
 		print "maybe it is in archive..."
-		cf = ConfigParser.ConfigParser()
-		cf.read(os.path.join(os.path.split(os.path.realpath(__file__))[0],"cfg.ini"))
+
+		c = cfg.configFile()
+		cf = c.cp
+
 		toolName = cf.get("Tool", "Name")
 		FileTypes = cf.get("Tool", "FileTypes")
 		
@@ -58,33 +70,40 @@ def extractFind(filename, rootdir):
 		else:
 			print pkgs
 			for p in pkgs:
-				arch = extract.archive(p, toolName)
+				arch = compressTool.extractFile(p, toolName)
 				if arch.extractFile() == 0:
-					pass
+					file = findOneFile(filename, rootdir)
+					if file == "multi":
+						print "Find multi files with same name. Please change path to choose one."
+						return None
+					elif file == None:
+						pass
+					else:
+						return file
 				else:
 					print "ERR: %s format err" % p
 					pass
-			
-			# pkg may be double archived, like .tar.gz
-			pkgs2 = findPkg(pkgTypes, rootdir)
-			for p in pkgs2:
-				if p not in pkgs:
-					arch = extract.archive(p, toolName)
-					if arch.extractFile() == 0:
+
+		# pkg may be double archived, like .tar.gz
+		# check for new archive
+		pkgs2 = findPkg(pkgTypes, rootdir)
+		for p in pkgs2:
+			if p not in pkgs:
+				arch = compressTool.extractFile(p, toolName)
+				if arch.extractFile() == 0:
+					file = findOneFile(filename, rootdir)
+					if file == "multi":
+						print "Find multi files with same name. Please change path to choose one."
+						return None
+					elif file == None:
 						pass
 					else:
-						print "ERR: %s format err" % p
-						pass
-			
-			#print "checking again..."
-			files = findFilePath(filename, rootdir)
-			if len(files) == 0:
-				#print "vmlinux not found again!"
-				return None
-			elif len(files) == 1:
-				#print "got vmliux at " + os.path.dirname(files[0])
-				return os.path.dirname(files[0])
-
+						return file
+				else:
+					print "ERR: %s format err" % p
+					pass
+		
 	else:
-		print "Find multi dump logs. Please change path to choose one."
-		return None
+		# only get one file, return it
+		return file
+	

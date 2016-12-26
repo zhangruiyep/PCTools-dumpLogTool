@@ -3,6 +3,7 @@
 2016-10-14 complete 8 PON registors
 '''
 import sys
+import os
 
 decode = {
 	"23":"Secure watchdog bite",
@@ -19,10 +20,17 @@ def printRESET(filename):
 	f.seek(0x764,0)
 	byte = f.read(1)
 	value = byte.encode("hex")
+	
+	logf = open(os.path.join(os.path.split(os.path.realpath(filename))[0], r"parser\GCC_RESET_STATUS"), "wb")
 	print "0x"+value
+	logf.write("0x"+value+"\n")
 	try:
 		print decode[value]
+		logf.write (decode[value])
 	except:
 		print "unknown reason"
+		logf.write ("unknown reason\n")
+	
+	logf.close()
 	
 	f.close()
