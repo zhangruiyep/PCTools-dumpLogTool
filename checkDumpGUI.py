@@ -109,7 +109,7 @@ class actFrame(tk.Frame):
 			p.packFiles()
 			
 			realVmPath = findFile.extractFind("vmlinux", txtVmPath)
-			p = compressTool.packFiles(realVmPath + "\\vmlinux", toolName)
+			p = compressTool.packFiles(realVmPath + "\\vmlinux", toolName, "vmlinux")
 			p.packFiles()
 		
 	def packResult(self):

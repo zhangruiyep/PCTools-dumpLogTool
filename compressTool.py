@@ -140,7 +140,10 @@ class packFiles:
 			
 			today = datetime.date.today()
 			now = datetime.datetime.now()
-			nowStr = datetime.datetime.strftime(now, "_%Y%m%d_%H%M")
+			if self.option == "vmlinux":
+				nowStr = ""
+			else:
+				nowStr = datetime.datetime.strftime(now, "_%Y%m%d_%H%M")
 			print self.tool.exe + self.tool.packCmd.format(os.path.realpath(self.fileNm) + nowStr + "." + self.tool.packType, self.fileNm)
 			os.system(self.tool.exe + self.tool.packCmd.format(os.path.realpath(self.fileNm) + nowStr + "." + self.tool.packType, self.fileNm))
 			return 0
