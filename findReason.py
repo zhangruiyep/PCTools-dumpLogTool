@@ -1,5 +1,5 @@
 import os
-import ConfigParser
+import cfg
 
 '''
 reasons = [
@@ -10,8 +10,8 @@ reasons = [
 '''
 
 def findReason(filename):
-	cf = ConfigParser.ConfigParser()
-	cf.read(os.path.join(os.path.split(os.path.realpath(__file__))[0],"cfg.ini"))
+	c = cfg.configFile()
+	cf = c.cp
 	keys = cf.get("Reason", "Keywords")
 	#print keys
 	reasons = keys.split(';')
@@ -23,6 +23,9 @@ def findReason(filename):
 		for r in reasons:
 			if r in l:
 				print l
+		#find Linux version
+		if "Linux Banner:" in l:
+			print l
 	f.close()
 	
 	print "That's all I can find..."

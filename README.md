@@ -10,7 +10,7 @@ Feature:
 
 Usage:
 ------
-1. Unzip this tool into ramdump tool. Such as D:\ramdump\dumpLogTool\checkdump.bat
+1. Unzip this tool into ramdump tool. Such as D:\ramdump\dumpLogTool\start.bat
 
 2. Modify ini file to your real path if needed.
 
@@ -106,4 +106,7 @@ Change History:
 	
 	* Imporve extract and find code flow to save time.
 	
+* 2017/1/11
+
+	* Add cygwin support to print Linux version
 	
