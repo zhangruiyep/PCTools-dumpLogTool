@@ -3,6 +3,7 @@
 2016-10-14 complete 8 PON registors
 '''
 import sys
+import os
 import struct
 
 class PONregister(object):
@@ -14,15 +15,19 @@ class PONregister(object):
                 for i in range(0, 8):
                         print self.bitsList[i][0]
         def printValue(self, value):
+                result = ""
                 if self.name != "dummy":
 					if value != 0:
 						print ""
 						print self.name
+						result += "\n"+self.name+"\n"
 					for i in range(0, 8):
 						bit = value & 0x01
 						if bit == 1:
 							print self.bitsList[i][1]
+							result += self.bitsList[i][1]+"\n"
 						value = value >> 1
+                return result
 
 
 PON_PON_REASON1_tbl = [
@@ -120,11 +125,14 @@ def printPON(filename, hwType):
 		return
 	f = open(filename, "rb")
 	#print filename, "is opened"
+	logf = open(os.path.join(os.path.split(os.path.realpath(filename))[0], r"parser\PON"), "wb")
 	for i in range(0,8):
 	  curChar = struct.unpack("B", f.read(1))[0]
 	  #print curChar
-	  PMI8952_PON[i].printValue(curChar)
-		
+	  result = PMI8952_PON[i].printValue(curChar)
+	  logf.write(result)
+	  
+	logf.close()
 	f.close()
 '''
 # main

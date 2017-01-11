@@ -1,18 +1,17 @@
 import os
 import sys
-import ConfigParser
 import findFile
-import extract
 import findReason
 import printPON
 import printIMEM
+from cfg import *
 
 def checkDump(vm_path, log_path, platform):
 	# read ramdump path from cfg.ini
 	thisPath = os.path.split(os.path.realpath(__file__))[0]
-	cf = ConfigParser.ConfigParser()
-	cf.read(os.path.join(thisPath,"cfg.ini"))
 	lpPath = os.path.split(thisPath)[0]
+	cfg = configFile()
+	cf = cfg.cp
 	
 	parserPath = findFile.extractFind("ramparse.py", os.path.realpath(lpPath))
 	
@@ -21,11 +20,14 @@ def checkDump(vm_path, log_path, platform):
 	logPath = findFile.extractFind("DDRCS0.BIN", log_path)
 
 	arch = "64-bit"
-	if platform != "":
-		arch = cf.get(platform, "arch")
-		fhCmd = " --force-hardware "+platform
-	else:
+	if platform == "":
 		fhCmd = ""
+	elif "unknown" in platform:
+		arch = cf.get("arch", platform)
+		fhCmd = ""
+	else:
+		arch = cf.get("arch", platform)
+		fhCmd = " --force-hardware "+platform
 	
 	nm = cf.get(arch, "nm")
 	gdb = cf.get(arch, "gdb")
@@ -38,7 +40,7 @@ def checkDump(vm_path, log_path, platform):
 		print "set platform: %s" % platform
 		
 		# call ramparse.py
-		#print parserCmdLine
+		print parserCmdLine
 		os.system(parserCmdLine)
 		
 		findReason.findReason(os.path.join(logPath, r"parser\dmesg_TZ.txt"))
