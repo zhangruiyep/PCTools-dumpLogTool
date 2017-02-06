@@ -10,6 +10,8 @@ reasons = [
 '''
 
 def findReason(filename):
+	result = ""
+
 	c = cfg.configFile()
 	cf = c.cp
 	keys = cf.get("Reason", "Keywords")
@@ -23,9 +25,11 @@ def findReason(filename):
 		for r in reasons:
 			if r in l:
 				print l
-		#find Linux version
-		if "Linux Banner:" in l:
-			print l
+				if r == "vmlinux is probably wrong":
+					result = r
 	f.close()
 	
 	print "That's all I can find..."
+	
+	return result
+	
