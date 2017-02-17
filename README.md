@@ -109,4 +109,7 @@ Change History:
 * 2017/1/11
 
 	* Add cygwin support to print Linux version
-	
+
+* 2017/2/17
+
+	* Add "while" for extacting packages and improve the flow to save time.

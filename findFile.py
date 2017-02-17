@@ -63,46 +63,36 @@ def extractFind(filename, rootdir):
 		
 		pkgTypes = FileTypes.split(';')
 		# find archive and extract
+		decompressed_files = []
 		pkgs = findPkg(pkgTypes, rootdir)
-		if len(pkgs) == 0:
-			#print "pkgs not found"
-			return None
-		else:
-			print pkgs
-			for p in pkgs:
-				arch = compressTool.extractFile(p, toolName)
-				if arch.extractFile() == 0:
-					file = findOneFile(filename, rootdir)
-					if file == "multi":
-						print "Find multi files with same name. Please change path to choose one."
-						return None
-					elif file == None:
-						pass
+		need_extract_files = [x for x in pkgs if x not in decompressed_files] + [x for x in decompressed_files if x not in pkgs]
+		while need_extract_files != []:
+			#print "found pkgs need extract:"
+			print need_extract_files
+			
+			if len(need_extract_files) == 0:
+				#print "pkgs not found"
+				return None
+			else:
+				#print need_extract_files
+				for p in need_extract_files:
+					arch = compressTool.extractFile(p, toolName)
+					if arch.extractFile() == 0:
+						decompressed_files.append(p)
+						file = findOneFile(filename, rootdir)
+						if file == "multi":
+							print "Find multi files with same name. Please change path to choose one."
+							return None
+						elif file == None:
+							pass
+						else:
+							return file
 					else:
-						return file
-				else:
-					print "ERR: %s format err" % p
-					pass
-
-		# pkg may be double archived, like .tar.gz
-		# check for new archive
-		pkgs2 = findPkg(pkgTypes, rootdir)
-		for p in pkgs2:
-			if p not in pkgs:
-				arch = compressTool.extractFile(p, toolName)
-				if arch.extractFile() == 0:
-					file = findOneFile(filename, rootdir)
-					if file == "multi":
-						print "Find multi files with same name. Please change path to choose one."
-						return None
-					elif file == None:
+						print "ERR: %s format err" % p
 						pass
-					else:
-						return file
-				else:
-					print "ERR: %s format err" % p
-					pass
-		
+						
+			pkgs = findPkg(pkgTypes, rootdir)
+			need_extract_files = [x for x in pkgs if x not in decompressed_files] + [x for x in decompressed_files if x not in pkgs]
 	else:
 		# only get one file, return it
 		return file
