@@ -44,14 +44,19 @@ def checkDump(vm_path, log_path, platform):
 		print parserCmdLine
 		os.system(parserCmdLine)
 		
-		findReason.findReason(os.path.join(logPath, r"parser\dmesg_TZ.txt"))
+		result = findReason.findReason(os.path.join(logPath, r"parser\dmesg_TZ.txt"))
 
-		print "============================="
-		print "Get Linux version in vmlinux:"
 		cyg = cygwin.cygwinTool()
 		cygPath = cyg.getPath()
-		if cygPath != "":
+		if cygPath != "" and result == "vmlinux is probably wrong":
+			print "============================="
+			print "Get Linux version in vmlinux:"
 			grepCmdLine = r'{0}\strings {1}\vmlinux | {0}\grep "Linux version"'.format(cygPath, vmPath)
+			#print grepCmdLine
+			os.system(grepCmdLine)
+			print "========================="
+			print "Get Linux version in log:"
+			grepCmdLine = r'{0}\strings {1}\DDRCS0.BIN | {0}\grep "Linux version"'.format(cygPath, logPath)
 			#print grepCmdLine
 			os.system(grepCmdLine)
 		
