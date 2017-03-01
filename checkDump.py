@@ -46,19 +46,20 @@ def checkDump(vm_path, log_path, platform):
 		
 		result = findReason.findReason(os.path.join(logPath, r"parser\dmesg_TZ.txt"))
 
-		cyg = cygwin.cygwinTool()
-		cygPath = cyg.getPath()
-		if cygPath != "" and result == "vmlinux is probably wrong":
-			print "============================="
-			print "Get Linux version in vmlinux:"
-			grepCmdLine = r'{0}\strings {1}\vmlinux | {0}\grep "Linux version"'.format(cygPath, vmPath)
-			#print grepCmdLine
-			os.system(grepCmdLine)
-			print "========================="
-			print "Get Linux version in log:"
-			grepCmdLine = r'{0}\strings {1}\DDRCS0.BIN | {0}\grep "Linux version"'.format(cygPath, logPath)
-			#print grepCmdLine
-			os.system(grepCmdLine)
+		if result == "vmlinux is probably wrong":
+			cyg = cygwin.cygwinTool()
+			cygPath = cyg.getPath()
+			if cygPath != "":
+				print "============================="
+				print "Get Linux version in vmlinux:"
+				grepCmdLine = r'{0}\strings {1}\vmlinux | {0}\grep "Linux version"'.format(cygPath, vmPath)
+				#print grepCmdLine
+				os.system(grepCmdLine)
+				print "========================="
+				print "Get Linux version in log:"
+				grepCmdLine = r'{0}\strings {1}\DDRCS0.BIN | {0}\grep "Linux version"'.format(cygPath, logPath)
+				#print grepCmdLine
+				os.system(grepCmdLine)
 		
 		# check if extra ops exist
 		ex = cf.get("LinuxParser", "extra")

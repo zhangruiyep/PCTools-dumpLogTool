@@ -40,7 +40,12 @@ class cygwinTool():
 			pass
 
 		if self.regPath != "":
-			pathInReg = winRegistry.getRegValue(self.regPath, self.regName)[0]
+                        regValue = winRegistry.getRegValue(self.regPath, self.regName)
+                        if regValue != "":
+                                pathInReg = regValue[0]
+                        else:
+                                pathInReg = ""
+                                print "Can not get Cygwin path in registry."
 
 		''' Now we have path in registry and user define path in ini file.
 		Check user path first.
@@ -52,17 +57,18 @@ class cygwinTool():
 			# check regitry path
 			#print "%s not found" % self.name
 			#print "pathInReg=%s" % pathInReg
-			binPath = os.path.join(pathInReg, r"bin")
-			files = findFile.findFilePath(r"cygwin1.dll", binPath)
-			if len(files) == 0:
-				return -1
-			elif len(files) == 1:
-				self.binPath = os.path.realpath(binPath)
-				cf.set("cygwin", "Path", pathInReg)
+			if pathInReg != "":
+                                binPath = os.path.join(pathInReg, r"bin")
+                                files = findFile.findFilePath(r"cygwin1.dll", binPath)
+                                if len(files) == 0:
+                                        return -1
+                                elif len(files) == 1:
+                                        self.binPath = os.path.realpath(binPath)
+                                        cf.set("cygwin", "Path", pathInReg)
 				
-				self.cfg.write()
+                                        self.cfg.write()
 				
-				return 0
+                                        return 0
 		elif len(files) == 1:
 			self.binPath = os.path.realpath(binPath)
 			return 0
