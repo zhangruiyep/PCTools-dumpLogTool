@@ -13,6 +13,6 @@ class configFile():
 	def write(self, filename="cfg.ini"):
 		realFileName = os.path.join(os.path.split(os.path.realpath(__file__))[0],filename)
 		writeFile = open(realFileName, "w")
-		self.cp.write(f)
+		self.cp.write(writeFile)
 		writeFile.close()
 
