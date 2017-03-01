@@ -113,3 +113,7 @@ Change History:
 * 2017/2/17
 
 	* Add "while" for extacting packages and improve the flow to save time.
+
+* 2017/3/1
+
+	* Fix bug when using 32-bit OS, or cygwin is not installed.
